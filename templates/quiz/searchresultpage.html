@@ -1,0 +1,89 @@
+{% extends 'quiz/adminbase.html' %}
+{% block content %}
+{%load static%}
+
+<head>
+  <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+  <style media="screen">
+    a:link {
+      text-decoration: none;
+    }
+
+    h6 {
+      text-align: center;
+    }
+
+    .row {
+      margin: 100px;
+    }
+  </style>
+</head>
+<br><br>
+<div class="container">
+{% if results %}
+<h1>Result Database</h1>
+{% else %}
+<h1>Sorry No Results Found for this exam</h1>
+{% endif %}
+
+
+<table class="table">
+  <thead class="thead-light">
+    <tr>
+
+      <th scope="col">Student</th>
+      <th scope="col">Marks</th>
+      <th scope="col">DateTime</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+{% for result in results %}
+      <td>{{result.student}}</td>
+      <td>{{result.marks}}</td>
+      <td>{{result.date}}</td>
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+    <hr>
+
+
+
+
+
+<div class="card-columns">
+    {% for result in results %}
+<!--  <div class="card">-->
+<!--    <img class="card-img-top" src="{{ result.image.url }}" alt="Card image cap">-->
+<!--    <div class="card-body">-->
+<!--      <h5 class="card-title">{{result.name}}</h5>-->
+<!--      <p class="card-text"><strong>Shop</strong>:{{result.shopname}}</p>-->
+<!--      <p class="card-text">{{result.description}}</p>-->
+<!--      -->
+<!--      <p class="card-text"><strong>Address</strong>:{{result.address}}</p>-->
+<!--      -->
+<!--      <p class ="card-text">ShopImage<a href="{{result.owner.shopphoto.image.url}}">Click</a></p>-->
+
+
+<!--      -->
+<!--            -->
+
+<!--      <button class="btn btn-success">Price:{{result.price}}</button>-->
+<!--      -->
+
+<!--    -->
+
+<!--    </div>-->
+<!-- </div>-->
+  {% endfor %}
+</div>
+
+</div>
+
+<br><br><br><br><br><br>
+{% endblock content %}
