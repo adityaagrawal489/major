@@ -1,5 +1,39 @@
 {% extends 'teacher\teacher_particular_course_base.html' %}
 {% load widget_tweaks %}
+<!-- {% block header %}
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<a class="navbar-brand" href="#">Automatic Attedance System</a>
+<div class="collapse navbar-collapse"></div>
+<div class="collapse navbar-collapse" id="navbarText">
+<ul class="navbar-nav mr-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'tea_par_course' pk=name  %}">Meeting <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'teacherstudent_attendence' pk=name  %}">Attedance</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Student</a>
+  </li>
+</ul>
+
+</div>
+<label for="check">
+<i style="    left: 300px;
+margin-top: 0px;"class="fas fa-bars" id="sidebar_btn"></i>
+</label>
+
+</div>
+<div class="right_area" style="    position: absolute;
+top: 40px;
+right: 10px;">
+<a href="/logout" class="logout_btn">Logout</a>
+</div> 
+
+</nav> 
+
+{% endblock header %} -->
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -26,44 +60,77 @@
 	<title>
 	    Automatic Attedance System
 	</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+     $("[href]").each(function() {
+         if (this.href == window.location.href) {
+             $(this).addClass("active");
+         }
+     });
+ });
+  
+
+ </script>
+  
 </head>
 
 <body>
-	     
+  
+ 
+  <form method="POST" action="/teacher/teacher_particular_course/{{name}}">
+    <div class="form-row" style="margin: 20px;">
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">meeting-link</label>
+        <input type="text" class="form-control" id="inputEmail4" name='meeting'placeholder="meetinglink">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputPassword4">start</label>
+        <input type="time" class="form-control" id="inputPassword4" name='start'placeholder="start-time">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputAddress">end</label>
+        <input type="time" required class="form-control" name="finish" id="inputAddress" placeholder="end">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputAddress2">Date</label>
+        <input type="date" class="form-control" name="date" id="inputAddress2" placeholder="date">
+      </div>
+      <div class="col-md-2" >
+        
+        <button  style="    margin: 30px;" type="submit" class="btn btn-primary">Add</button>
+      </div>
+      
+    </div>
+    
+  </form> 
 		
 			
 	<table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">S.NO</th>
+            <th scope="col">Meeting-link</th>
+            <th scope="col">Start_time</th>
+            <th scope="col">End_time</th>
+            <th scope="col">Date</th>
           </tr>
         </thead>
+        {% for m in Meeting  %}
         <tbody>
+         
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td></td>
+            <td>{{m.Meeting_link}}</td>
+            <td>{{m.start_time}}</td>
+            <td>{{m.end_time}}</td>
+            <td>{{m.date}}</td>
           </tr>
         </tbody>
+        {% endfor %}
       </table>
       
-      <table class="table">
+      <!-- <table class="table">
         <thead class="thead-light">
           <tr>
             <th scope="col">#</th>
@@ -92,7 +159,7 @@
             <td>@twitter</td>
           </tr>
         </tbody>
-      </table>
+      </table> -->
 
 	<!-- Optional JavaScript -->
 	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
@@ -110,6 +177,15 @@
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous">
 	</script>
+    <script type="text/javascript">
+      var addSerialNumber = function () {
+    $('table tr').each(function(index) {
+        $(this).find('td:nth-child(1)').html(index );
+    });
+};
+
+addSerialNumber();
+   </script>
 </body>
 
 </html>

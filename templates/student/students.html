@@ -1,0 +1,196 @@
+{% extends 'student\student_particular_course_base.html' %}
+{% load widget_tweaks %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<!-- Required meta tags -->
+	<meta charset="utf-8">
+	<meta name="viewport" content=
+		"width=device-width, initial-scale=1,shrink-to-fit=no">
+
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href=
+"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+			integrity=
+"sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+		crossorigin="anonymous">
+		
+	<link rel="stylesheet" href=
+"https://use.fontawesome.com/releases/v5.4.1/css/all.css"
+			integrity=
+"sha384-5sAR7xN1Nv6T6+dT2mhtzEpVJvfS3NScPQTrOxhwjIuvcA67KV2R5Jz6kr4abQsz"
+			crossorigin="anonymous">
+
+	<title>
+	    Automatic Attedance System
+	</title>
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+     $("[href]").each(function() {
+         if (this.href == window.location.href) {
+             $(this).addClass("active");
+         }
+     });
+ });
+  
+
+ </script>
+  
+</head>
+
+<body>
+  
+ 
+  <!-- <form method="POST" action="/teacher/teacher_particular_course/{{name}}">
+    <div class="form-row" style="margin: 20px;">
+      <div class="form-group col-md-3">
+        <label for="inputEmail4">meeting-link</label>
+        <input type="text" class="form-control" id="inputEmail4" name='meeting'placeholder="meetinglink">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputPassword4">start</label>
+        <input type="time" class="form-control" id="inputPassword4" name='start'placeholder="start-time">
+      </div>
+      <div class="form-group col-md-2">
+        <label for="inputAddress">end</label>
+        <input type="time" required class="form-control" name="finish" id="inputAddress" placeholder="end">
+      </div>
+      <div class="form-group col-md-3">
+        <label for="inputAddress2">Date</label>
+        <input type="date" class="form-control" name="date" id="inputAddress2" placeholder="date">
+      </div>
+      <div class="col-md-2" >
+        
+        <button  style="    margin: 30px;" type="submit" class="btn btn-primary">Add</button>
+      </div>
+      
+    </div>
+    
+  </form>  -->
+	<div class="teachers">
+        <h1>Teachers</h1>
+        <hr>
+        <table class="table">
+            
+            {% for m in teachers  %}
+            
+            <tbody>
+               
+              <tr>
+                
+                <td>{{m.user.username}}</td>
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+    </div>
+	
+    <div class="students">
+        <h1>Classmates</h1>
+        <hr>
+        <table class="table">
+           
+            {% for m in students%}
+            <tbody>
+             
+              <tr>
+                
+                <td>{{m.user.username}}</td>
+                
+              </tr>
+            </tbody>
+            {% endfor %}
+          </table>
+    </div>
+    
+    
+	
+
+	<!-- Optional JavaScript -->
+	<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+	<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+		integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+		crossorigin="anonymous">
+	</script>
+	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+		integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+		crossorigin="anonymous">
+	</script>
+
+	<s src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+		crossorigin="anonymous">
+	</script>
+    
+   <script type="text/javascript">
+    function manupulate(text){
+      
+let len=text.length-5
+let result = text.substring(0,len);
+console.log(text[len+1])
+if(text[len+1]==='p')
+  result=result+' PM'
+else
+  result=result+' AM'
+ return result;
+    }
+    function dateObj(d) { // date parser ...
+    var parts = d.split(/:|\s/),
+        date  = new Date();
+    if (parts.pop().toLowerCase() == 'pm') parts[0] = (+parts[0]) + 12;
+    date.setHours(+parts.shift());
+    date.setMinutes(+parts.shift());
+    return date;
+}
+
+     function check(start,end){
+    var startTime = manupulate(start);
+var endTime   = manupulate(end);
+var now       = new Date();
+console.log(startTime)
+console.log(endTime)
+console.log(endTime)
+var startDate = dateObj(startTime); // get date objects
+var endDate   = dateObj(endTime);
+console.log(startDate);
+console.log(endDate)
+console.log(now)
+
+var open = now < endDate && now > startDate ? 'open' : 'closed'; // compare
+if(open==='open')return true;
+else return false;
+}
+
+
+sanju=document.querySelectorAll('tr');
+sanju.forEach(function(element,index){
+
+  if(index>0){
+    let start=(element.cells[2].innerHTML);
+    let end=(element.cells[3].innerHTML);
+    let date=(element.cells[4].innerHTML);
+    let today=new Date().toLocaleDateString('en-us', {year:"numeric", month:"long", day:"numeric"});
+    console.log(date);
+    console.log(today);
+    console.log(check(start,end));
+    if(date===today&&check(start,end)){
+        console.log('galat hai')
+    }else{
+        console.log('sahi hai')
+         element.cells[5].hidden=true;
+
+    } 
+  }
+   
+});
+   </script>
+</body>
+
+</html>
+
+  {% endblock content %}

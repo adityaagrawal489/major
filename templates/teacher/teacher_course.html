@@ -30,15 +30,15 @@
 </head>
 
 <body>
-	<div class="" style="display:flex; flex-wrap: wrap;justify-content: space-between;">
+	<div class="" style="display:flex; flex-wrap: wrap;justify-content: space-around;">
         {% for course in courses%}
-		<div class="card" style="width: 300px; height: 200px;" >
-			<img class="card-img-top" src="" alt="Card image cap">
+		<div class="card" style="width: 400px; height: 300px;margin: 10px;" >
+			<img  class="card-img-top image_url"  alt="Card image cap">
 			<div class="card-block">
-				<h4 class="card-title">{{course.title}}</h4>
+				<a href="{% url 'tea_par_course' pk=course.id  %}" class="card-title">{{course.course_name}}</a>
 				<p class="card-text">
-					{{course.teacher}}
-				</p>
+					{{course.join_code}} 
+				</p> 
 
 				<p class="card-text">
 					<small class="text-muted">
@@ -67,6 +67,33 @@
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
 		integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
 		crossorigin="anonymous">
+	</script>
+	<script type="text/javascript">
+      
+	   function apply_src(){
+
+		url_array=document.querySelectorAll('.image_url');
+		url = new Array;
+		url[0]='https://gstatic.com/classroom/themes/img_code.jpg'
+		 url[1]="https://gstatic.com/classroom/themes/img_backtoschool.jpg"
+         url[2]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+         url[3]="https://gstatic.com/classroom/themes/Writing.jpg"
+         url[4]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+		url[5]="https://gstatic.com/classroom/themes/img_learnlanguage.jpg"
+		url[6]="https://gstatic.com/classroom/themes/Design.jpg"
+		url[7]="https://gstatic.com/classroom/themes/img_code.jpg"
+		url[8]="https://gstatic.com/classroom/themes/img_learnlanguage.jpg"
+		url[9]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+		url[10]="https://gstatic.com/classroom/themes/img_bookclub.jpg"    
+			
+       url_array.forEach(element => {
+		Chooselink = Math.round(Math.random() * (url.length));
+			element.src=url[Chooselink];
+	   });
+
+	
+	   }
+    apply_src();
 	</script>
 </body>
 

@@ -9,10 +9,13 @@ from django.conf import settings
 from datetime import date, timedelta
 from quiz import models as QMODEL
 from teacher import models as TMODEL
+
 import random
 from random import shuffle
-
+from quiz.models import *
 from django.http import HttpResponse
+from django.contrib.auth import authenticate, login
+import capture_photos
 #for showing signup/login button for student
 def studentclick_view(request):
     if request.user.is_authenticated:
@@ -35,7 +38,12 @@ def student_signup_view(request):
             student.save()
             my_student_group = Group.objects.get_or_create(name='STUDENT')
             my_student_group[0].user_set.add(user)
-        return HttpResponseRedirect('studentlogin')
+            new_user = authenticate(username=userForm.cleaned_data['username'],
+                                    password=userForm.cleaned_data['password'],
+                                    )
+            login(request, new_user)
+            request.session["FACE_PAGE"]=0
+            return redirect('student_course')
     return render(request,'student/studentsignup.html',context=mydict)
 
 def is_student(user):
@@ -138,6 +146,126 @@ def student_marks_view(request):
 def jaishreeram(request):
     if request.method=='POST':
        print(request.user.id)
-       print(request.POST['classroom'])
+       code=(request.POST['classroom'])
+       course=Course.objects.get(join_code=code)
+       student=Student.objects.get(user_id=request.user.id)
+       student.Course.add(course)
        return HttpResponse("its working fine")
     return render(request,'student/join_course.html')
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_course(request):
+    # courses=Course.objects.filter(pk=request.user.id)
+    student=Student.objects.get(user_id=request.user.id)
+    courses=student.Course.all()
+    # course=[
+    #     {
+    #       'title':'chemistry',
+    #       'teacher':'sahuji'
+    #     },
+    #     {
+    #        'title':'mathes',
+    #        'teacher':'sharmaji'
+    #     },
+    #     {
+    #        'title':'Genetic Algorithm',
+    #        'teacher':'vermaji'
+    #     },
+    #     {
+    #        'title':'Genetic Algorithm',
+    #        'teacher':'vermaji'
+    #     }
+    # ]
+    print(request.user.username)
+    print(courses)
+    return render(request,'student/student_course.html',{'courses':courses,'name':request.user.username})
+
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def student_particular_course(request,pk):
+     
+     AllMeeting=Meeting.objects.filter(Course_id=pk)
+     print(AllMeeting)
+     return render(request,'student/nabar_testing.html',{'name':pk,'Meeting':AllMeeting})
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def teacher_create_meeting(request):
+    meeting =request.post['meeting']
+    start=request.post['start']
+    end =request.post['end']
+    date= request.post['date']
+    return render(request,'teacher/nabar_testing.html' )
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def attend_meeting(request,pk):
+    meeting=Meeting.objects.get(id=pk)
+    student=Student.objects.get(user_id=request.user.id)
+    print(request.user.id)
+    attendance=Attendence(meeting_id=meeting,student_id=student)
+    attendance.save()
+    return HttpResponse('your attendence is recorded')  
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)  
+def all_students(request,pk):
+    students=Student.objects.filter(Course=pk)
+    teachers=Teacher.objects.filter(Course_id=pk)
+    print(teachers)
+    print(students)
+    return render(request,'student/students.html',{'name':pk,'students':students,'teachers':teachers}) 
+
+#shashank code
+def send_mail(name,mail,request):
+    import random
+    num = str(random.randrange(100000, 999999))
+    request.request.session["OTP"] = num
+    #send_otp.send_mail(name,mail,num)
+    return True
+
+@login_required(login_url='studentlogin')
+@user_passes_test(is_student)
+def face_register(request):
+    # print(request.session)
+    # if request.session["FACE_PAGE"] == 0:
+    #     request.session["cam_type"] = request.form["exampleRadios"]
+    #     folder_loc = request.session["USERID"]+"/"
+    #     create_folder.create_folder(folder_loc)
+    #     request.session["FACE_PAGE"]=1
+    #     return render("face_registeration_1.html")
+
+        
+    # if request.session["FACE_PAGE"] == 1:
+    #     capture_photos.capture_photos(5,request.session["cam_type"],request.session["USERID"])
+    #     #openCamera.open_cam(request.session["cam_type"])
+    #     request.session["FACE_PAGE"]=2
+    #     return render("face_registeration_2.html")
+
+    # if request.session["FACE_PAGE"] == 2:
+    #     capture_photos.capture_photos(5,request.session["cam_type"],request.session["USERID"])
+    #     request.session["FACE_PAGE"]=3
+    #     return render("face_registeration_3.html")
+
+    # if request.session["FACE_PAGE"] == 3:
+    #     capture_photos.capture_photos(5,request.session["cam_type"],request.session["USERID"])
+    #     train_model.train_model(request.session["USERID"])
+    #     return redirect(url_for("home"))
+    # return render("home.html")
+    if request.method=="POST":
+        print(request.session["FACE_PAGE"])
+        if request.session["FACE_PAGE"] == 0:
+            cam_type=request.POST["exampleRadios"]
+            # request.session["cam_type"] = request.form["exampleRadios"]
+            folder_loc = request.user.id+"/"
+            create_folder.create_folder(folder_loc)
+            request.session["FACE_PAGE"]=1
+            return render("face_registeration_1.html")
+     
+
+
+
+    return render(request,'student/face.html')
+
+       
+
+    

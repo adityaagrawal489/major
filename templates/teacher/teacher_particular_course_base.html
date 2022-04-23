@@ -169,13 +169,46 @@
   <input type="checkbox" id="check">
   <!--header area start-->
   <header>
-      <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+      <a class="navbar-brand" href="#">Automatic Attedance System</a>
+      <div class="collapse navbar-collapse"></div>
+      <div class="collapse navbar-collapse" id="navbarText">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'tea_par_course' pk=name  %}">Meeting <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'teacherstudent_attendence' pk=name  %}">Attedance</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'all_ts' pk=name  %}">Student</a>
+        </li>
+      </ul>
+      
+      </div>
+      <label for="check">
+      <i style="    left: 300px;
+      margin-top: 0px;"class="fas fa-bars" id="sidebar_btn"></i>
+      </label>
+      
+      </div>
+      <div class="right_area" style="    position: absolute;
+      top: 40px;
+      right: 10px;">
+      <a href="/logout" class="logout_btn">Logout</a>
+      </div> 
+      
+      </nav> 
+    <!-- {% block header %}
+
+    {% endblock header %} -->
+        <!-- <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">Automatic Attedance System</a>
   <div class="collapse navbar-collapse"></div>
   <div class="collapse navbar-collapse" id="navbarText">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item">
-        <a class="nav-link" href="/teacher/teacher_particular_course">Meeting <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="/teacher/teacher_particular_course/{{name}}">Meeting <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item">
         <a class="nav-link" href="/teacher/teacher_student_attendence">Attedance</a>
@@ -196,9 +229,9 @@
   top: 40px;
   right: 10px;">
     <a href="/logout" class="logout_btn">Logout</a>
-  </div>
+  </div> 
   
-</nav>
+</nav>  -->
     
    
   </header>

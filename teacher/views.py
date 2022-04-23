@@ -6,12 +6,13 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from datetime import date, timedelta
+
 # from quiz import models as QMODEL
 # from student import models as SMODEL
 from quiz import forms as QFORM
 from quiz.models import *
 from django.http import HttpResponse
-
+from django.contrib.auth.models import User
 #for showing signup/login button for teacher
 def teacherclick_view(request):
     if request.user.is_authenticated:
@@ -128,43 +129,100 @@ def remove_question_view(request,pk):
 @user_passes_test(is_teacher)
 def join_course(request):
    if request.method=='POST':
-       print(request.user)
-       print(request.POST['classname'])
+       
+       classname=request.POST['classname']
+       course=Course(course_name=classname)
+       course.save()
+       print(request.user.id)
+      
+       teacher=Teacher.objects.get(user_id=request.user.id)
+       print(teacher)
+       teacher.Course_id.add(course)
        return HttpResponse('sahi kam kar raha hai')
    return render(request,'teacher/createclassroom.html')
 
 @login_required(login_url='teacherlogin')
 @user_passes_test(is_teacher)
 def teacher_course(request):
-    course=[
-        {
-          'title':'chemistry',
-          'teacher':'sahuji'
-        },
-        {
-           'title':'mathes',
-           'teacher':'sharmaji'
-        },
-        {
-           'title':'Genetic Algorithm',
-           'teacher':'vermaji'
-        },
-        {
-           'title':'Genetic Algorithm',
-           'teacher':'vermaji'
-        }
-    ]
-    return render(request,'teacher/teacher_course.html',{'courses':course})
-def teacher_particular_course(request):
-
-    return render(request,'teacher/nabar_testing.html')
+    # courses=Course.objects.filter(pk=request.user.id)
+    teacher=Teacher.objects.get(user_id=request.user.id)
+    courses=teacher.Course_id.all()
+    # course=[
+    #     {
+    #       'title':'chemistry',
+    #       'teacher':'sahuji'
+    #     },
+    #     {
+    #        'title':'mathes',
+    #        'teacher':'sharmaji'
+    #     },
+    #     {
+    #        'title':'Genetic Algorithm',
+    #        'teacher':'vermaji'
+    #     },
+    #     {
+    #        'title':'Genetic Algorithm',
+    #        'teacher':'vermaji'
+    #     }
+    # ]
+    print(request.user.username)
+    print(courses)
+    return render(request,'teacher/teacher_course.html',{'courses':courses,'name':request.user.username})
+def teacher_particular_course(request,pk):
+     if request.method=='POST':
+          meeting =request.POST['meeting']
+          start=request.POST['start']
+          
+          end_tim =request.POST['finish']
+          dat= request.POST['date']
+          try:
+                meet=Meeting(Course_id_id=pk,Meeting_link=meeting,start_time=start,end_time=end_tim,date=dat)
+                meet.save()
+          except:
+              return HttpResponse('sahi kam kar raha hai')
+          AllMeeting=Meeting.objects.filter(Course_id=pk)
+          return render(request,'teacher/nabar_testing.html',{'name':pk,'Meeting':AllMeeting})
+ 
+     AllMeeting=Meeting.objects.filter(Course_id=pk)
+     name=pk
+     print(AllMeeting)
+     return render(request,'teacher/nabar_testing.html',{'name':pk,'Meeting':AllMeeting})
 
 def teacher_create_meeting(request):
+    meeting =request.post['meeting']
+    start=request.post['start']
+    end =request.post['end']
+    date= request.post['date']
+    return render(request,'teacher/nabar_testing.html' )
     
-   return render(request,'teacher/teacher_meeting.html')
-def  teacher_student_attendence(request):
-   
-    return render(request,'teacher/attendence.html')
+def  teacher_student_attendence(request,pk):
+    totals=Meeting.objects.filter(Course_id=pk).count()
+    Allmeeting=Meeting.objects.filter(Course_id=pk)
+    Allmeeting=list(map((lambda x:x.id),Allmeeting))
+    
+    students=Student.objects.filter(Course=pk)
+    print(Allmeeting)
+    attedance=list(map((lambda x:particular_student(x,Allmeeting)),students)) 
+    print(attedance)
+    print(students)
+    print(totals)
+    mylist = zip(students, attedance)
+    
+                
+            
+    return render(request,'teacher/attendence.html',{'name':pk,'mylist':mylist,'total':totals})
 
+def particular_student(student,All):
+     print('jaishreepram',All)
+     print('its is user id',student.user_id)
+     anshuman=Attendence.objects.filter(meeting_id__in=All)
+     
+     return Attendence.objects.filter(student_id=student,meeting_id__in=All).count()
 
+def all_students(request,pk):
+    students=Student.objects.filter(Course=pk)
+    teachers=Teacher.objects.filter(Course_id=pk)
+    print(teachers)
+    print(students)
+    return render(request,'teacher/students.html',{'name':pk,'students':students,'teachers':teachers}) 
 

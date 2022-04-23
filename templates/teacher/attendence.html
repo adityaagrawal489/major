@@ -1,5 +1,39 @@
 {% extends 'teacher\teacher_particular_course_base.html' %}
 {% load widget_tweaks %}
+{% block header %}
+  
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<a class="navbar-brand" href="#">Automatic Attedance System</a>
+<div class="collapse navbar-collapse"></div>
+<div class="collapse navbar-collapse" id="navbarText">
+<ul class="navbar-nav mr-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'tea_par_course' pk=name  %}">Meeting <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="{% url 'teacherstudent_attendence' pk=name  %}">Attedance</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Student</a>
+  </li>
+</ul>
+
+</div>
+<label for="check">
+<i style="    left: 300px;
+margin-top: 0px;"class="fas fa-bars" id="sidebar_btn"></i>
+</label>
+
+</div>
+<div class="right_area" style="    position: absolute;
+top: 40px;
+right: 10px;">
+<a href="/logout" class="logout_btn">Logout</a>
+</div> 
+
+</nav> 
+
+{% endblock header %}
 {% block content %}
 <!DOCTYPE html>
 <html lang="en">
@@ -33,64 +67,26 @@
     <table class="table">
         <thead class="thead-dark">
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">Student name</th>
+            <th scope="col">Total class</th>
+            <th scope="col">Attend Class</th>
+            
           </tr>
         </thead>
+        {% for a,b in mylist %}
         <tbody>
+
           <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
+            <td>{{a.user.username}}</td>
+            <td>{{total}}</td>
+            <td>{{b}}</td>
+            
           </tr>
         </tbody>
+        {% endfor %}
       </table>
       
-      <table class="table">
-        <thead class="thead-light">
-          <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>@mdo</td>
-          </tr>
-          <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
-          </tr>
-        </tbody>
-      </table>
+      
 		
 
 	<!-- Optional JavaScript -->
