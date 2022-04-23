@@ -43,7 +43,6 @@ def afterlogin_view(request):
         return redirect('admin-dashboard')
 
 
-
 def adminclick_view(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('afterlogin')
@@ -196,7 +195,9 @@ def update_student_view(request,pk):
 def delete_student_view(request,pk):
     student=Student.objects.get(id=pk)
     user=User.objects.get(id=student.user_id)
+    student.Course.clear()
     user.delete()
+    
     student.delete()
     return HttpResponseRedirect('/admin-view-student')
 

@@ -33,7 +33,7 @@
 	<div class="" style="display:flex; flex-wrap: wrap;justify-content: space-between;">
         {% for course in courses%}
 		<div class="card" style="width: 300px; height: 200px;" >
-			<img class="card-img-top" src="" alt="Card image cap">
+			<img class="card-img-top image_url" src="" alt="Card image cap">
 			<div class="card-block">
 				<a href="{% url 'stud_par_course' pk=course.id  %}" class="card-title">{{course.course_name}}</a>
 				<p class="card-text">
@@ -69,7 +69,33 @@
 		crossorigin="anonymous">
 	</script>
 </body>
+<script type="text/javascript">
+      
+	function apply_src(){
 
+	 url_array=document.querySelectorAll('.image_url');
+	 url = new Array;
+	 url[0]='https://gstatic.com/classroom/themes/img_code.jpg'
+	  url[1]="https://gstatic.com/classroom/themes/img_backtoschool.jpg"
+	  url[2]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+	  url[3]="https://gstatic.com/classroom/themes/Writing.jpg"
+	  url[4]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+	 url[5]="https://gstatic.com/classroom/themes/img_learnlanguage.jpg"
+	 url[6]="https://gstatic.com/classroom/themes/Design.jpg"
+	 url[7]="https://gstatic.com/classroom/themes/img_code.jpg"
+	 url[8]="https://gstatic.com/classroom/themes/img_learnlanguage.jpg"
+	 url[9]="https://gstatic.com/classroom/themes/img_graduation.jpg"
+	 url[10]="https://gstatic.com/classroom/themes/img_bookclub.jpg"    
+		 
+	url_array.forEach(element => {
+	 Chooselink = Math.round(Math.random() * (url.length));
+		 element.src=url[Chooselink];
+	});
+
+ 
+	}
+ apply_src();
+ </script>
 </html>
 
   {% endblock content %}

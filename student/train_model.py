@@ -6,7 +6,7 @@ import pickle
 import sys
 import time
 import getpass
-import delete_folder
+from . import delete_folder
 from PIL import Image
 from datetime import datetime
 
@@ -66,3 +66,4 @@ def faceEncodings(imgList,encodeList):
         return 0
 
     return 1
+

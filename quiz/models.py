@@ -3,10 +3,10 @@ from django.db import models
 from ckeditor.fields import RichTextField
 from django.contrib.auth.models import User
 import uuid
-
+from shortuuidfield import ShortUUIDField
 
 class Course(models.Model):
-   join_code = models.UUIDField(default=uuid.uuid4, editable=False,unique=True)
+   join_code =ShortUUIDField( max_length=6,editable=False,unique=True)
    course_name = models.CharField(max_length=50)
    question_number = models.PositiveIntegerField(null=True)
    total_marks = models.PositiveIntegerField(null=True)
@@ -61,7 +61,7 @@ class Question(models.Model):
     answer=models.CharField(max_length=200,choices=cat)
 
 class Meeting(models.Model):
-    Course_id=models.ForeignKey(Course,on_delete=models.DO_NOTHING)
+    Course_id=models.ForeignKey(Course,on_delete=models.CASCADE)
     Meeting_link=models.CharField(max_length=20,blank=True,)
     start_time=models.TimeField()
     end_time=models.TimeField()
@@ -70,7 +70,7 @@ class Meeting(models.Model):
       unique_together = ('start_time', 'end_time','date','Course_id')
 class  Attendence(models.Model):
     meeting_id=models.ForeignKey(Meeting,on_delete=models.DO_NOTHING)
-    student_id=models.ForeignKey(Student,on_delete=models.DO_NOTHING)
+    student_id=models.ForeignKey(Student,on_delete=models.CASCADE)
       
     
 class Result(models.Model):

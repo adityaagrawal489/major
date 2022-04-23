@@ -24,12 +24,12 @@
 <br><br>
 <div class="container">
 <!--  yahan se form ka bana tha hoon-->
-  <form  method="get" action="search" class="form-inline">
+  <!-- <form  method="get" action="search" class="form-inline">
   <input class="form-control mr-sm-2" type="search" placeholder="Check Subject Wise Result" name="search" id="search" aria-label="Search">
 
 <br><br>
   <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-</form>
+</form> -->
   <br><br>
 <!--  yahan pe form khatam kr rha hoon-->
   <div class="panel panel-primary">
@@ -41,8 +41,6 @@
         <tr>
 
           <th>Course Name</th>
-          <th>Total Question</th>
-          <th>Total Marks</th>
           <th>Delete</th>
         </tr>
       </thead>
@@ -50,8 +48,6 @@
       <tr>
 
         <td> {{t.course_name}}</td>
-        <td>{{t.question_number}}</td>
-        <td>{{t.total_marks}}</td>
         
         <td><a class="btn btn-danger btn-xs" href="{% url 'delete-course' t.id  %}"><span class="glyphicon glyphicon-trash"></span></a></td>
       </tr>

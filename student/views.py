@@ -1,5 +1,7 @@
 from http.client import HTTPResponse
 from django.shortcuts import render,redirect,reverse
+
+from student.start_face_recognition import start_face_recognition
 from . import forms,models
 from django.db.models import Sum
 from django.contrib.auth.models import Group
@@ -9,13 +11,13 @@ from django.conf import settings
 from datetime import date, timedelta
 from quiz import models as QMODEL
 from teacher import models as TMODEL
-
+from . import start_face_recognition
 import random
 from random import shuffle
 from quiz.models import *
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
-import capture_photos
+from . import capture_photos,create_folder,train_model
 #for showing signup/login button for student
 def studentclick_view(request):
     if request.user.is_authenticated:
@@ -43,7 +45,7 @@ def student_signup_view(request):
                                     )
             login(request, new_user)
             request.session["FACE_PAGE"]=0
-            return redirect('student_course')
+            return redirect('face_register')
     return render(request,'student/studentsignup.html',context=mydict)
 
 def is_student(user):
@@ -150,7 +152,7 @@ def jaishreeram(request):
        course=Course.objects.get(join_code=code)
        student=Student.objects.get(user_id=request.user.id)
        student.Course.add(course)
-       return HttpResponse("its working fine")
+       return HttpResponseRedirect('student-dashboard')
     return render(request,'student/join_course.html')
 
 @login_required(login_url='studentlogin')
@@ -201,11 +203,17 @@ def teacher_create_meeting(request):
 @user_passes_test(is_student)
 def attend_meeting(request,pk):
     meeting=Meeting.objects.get(id=pk)
+    print(meeting.start_time)
+    print(meeting.end_time)
+    start_time=str(meeting.start_time)
+    end_time=str(meeting.end_time)
     student=Student.objects.get(user_id=request.user.id)
     print(request.user.id)
     attendance=Attendence(meeting_id=meeting,student_id=student)
-    attendance.save()
-    return HttpResponse('your attendence is recorded')  
+    if(start_face_recognition.start_face_recognition(str(request.user.id),0,start_time,end_time)):
+         attendance.save()
+   
+    return redirect('student_course')  
 @login_required(login_url='studentlogin')
 @user_passes_test(is_student)  
 def all_students(request,pk):
@@ -253,17 +261,33 @@ def face_register(request):
     # return render("home.html")
     if request.method=="POST":
         print(request.session["FACE_PAGE"])
+        yeeroj=str(request.user.id)
+        cam_type=0
         if request.session["FACE_PAGE"] == 0:
-            cam_type=request.POST["exampleRadios"]
-            # request.session["cam_type"] = request.form["exampleRadios"]
-            folder_loc = request.user.id+"/"
+            
+            request.session["cam_type"]=int(request.POST["exampleRadios"])
+            folder_loc =yeeroj+"/"
             create_folder.create_folder(folder_loc)
             request.session["FACE_PAGE"]=1
-            return render("face_registeration_1.html")
-     
-
-
-
+            return render(request,"student/face_registeration_1.html")
+        if request.session["FACE_PAGE"] == 1:
+            capture_photos.capture_photos(5, request.session["cam_type"],yeeroj)
+            #openCamera.open_cam(request.session["cam_type"])
+            request.session["FACE_PAGE"]=2
+            return render(request,"student/face_registeration_2.html")
+        if request.session["FACE_PAGE"] == 2:
+            capture_photos.capture_photos(5, request.session["cam_type"],yeeroj)
+            request.session["FACE_PAGE"]=3
+            return render(request,"student/face_registeration_3.html")
+        if request.session["FACE_PAGE"] == 3:
+            capture_photos.capture_photos(5, request.session["cam_type"],yeeroj)
+            train_model.train_model(yeeroj)
+            return redirect('student_course')
+        student=Student.objects.get(id=request.user.id)
+        user=User.objects.get(id=student.user_id)
+        user.delete()
+        student.delete()
+        return redirect('student_click')
     return render(request,'student/face.html')
 
        

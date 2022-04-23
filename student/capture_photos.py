@@ -2,9 +2,9 @@ import cv2
 import time
 import getpass
 import os
-import create_folder
-import delete_folder
-import count_files 
+from . import create_folder
+from . import delete_folder
+from . import count_files 
 def capture_photos(count,camera,ID):
     #parent = "C:/Users/Dell/Desktop/LEARNNG STUFF/FACERECOGNITION/"
     folder_loc = ID+"/"
@@ -17,12 +17,15 @@ def capture_photos(count,camera,ID):
         print("CAMERA NOT FOUND")
         return
     for i in range(count):
-        return_value, image = cam.read()
-        filename = ID + "-" + str(tot_files+i) + ".png";
-        cv2.imwrite(os.path.join(folder_loc, filename), image)
-        time.sleep(0.1)
+        try:
+            return_value, image = cam.read()
+            filename = ID + "-" + str(tot_files+i) + ".png";
+            cv2.imwrite(os.path.join(folder_loc, filename), image)
+            time.sleep(0.1)
+        except Exception as e:
+            print(str(e))
+            
 
     tot_files = count_files.count_files(folder_loc)
     print(tot_files)
     del cam
-# capture_photos(5,0,"aditya")

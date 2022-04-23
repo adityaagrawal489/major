@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en">
-
+{% load static %}
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
@@ -13,9 +13,9 @@
     <title>Hello, world!</title>
 </head>
 
-<body background="{{ url_for('static',filename='back.png')}}"
-    style="background-size: stretch; background-repeat: no-repeat;">
-
+<body >
+    
+    <img src="{% static 'image/admin.png' %}" alt="My image">
     <section class="vh-100 gradient-custom">
         <div class="container py-5 h-100">
             <div class="row d-flex justify-content-center align-items-center h-100">
@@ -27,7 +27,7 @@
 
                                 <h2 class="fw-bold mb-2 text-uppercase">SIGN UP</h2>
                                 <p class="text-white-50 mb-5">Select your prefered camera type</p>
-                                <form action="/face_signup" method="POST">
+                                <form action="" method="POST">
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="0" checked>
                                         <label class="form-check-label" for="exampleRadios1">

@@ -187,8 +187,12 @@ var endDate   = dateObj(endTime);
 console.log(startDate);
 console.log(endDate)
 console.log(now)
-
-var open = now < endDate && now > startDate ? 'open' : 'closed'; // compare
+if(startDate>endDate){
+  var temp=startDate;
+  startDate=endDate;
+  endDate=temp;
+}
+var open = now < endDate && now >=startDate ? 'open' : 'closed'; // compare
 if(open==='open')return true;
 else return false;
 }

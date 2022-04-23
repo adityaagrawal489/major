@@ -138,7 +138,7 @@ def join_course(request):
        teacher=Teacher.objects.get(user_id=request.user.id)
        print(teacher)
        teacher.Course_id.add(course)
-       return HttpResponse('sahi kam kar raha hai')
+       return HttpResponseRedirect('teacher-dashboard')
    return render(request,'teacher/createclassroom.html')
 
 @login_required(login_url='teacherlogin')
@@ -179,7 +179,7 @@ def teacher_particular_course(request,pk):
                 meet=Meeting(Course_id_id=pk,Meeting_link=meeting,start_time=start,end_time=end_tim,date=dat)
                 meet.save()
           except:
-              return HttpResponse('sahi kam kar raha hai')
+              print('something is wrong')
           AllMeeting=Meeting.objects.filter(Course_id=pk)
           return render(request,'teacher/nabar_testing.html',{'name':pk,'Meeting':AllMeeting})
  
