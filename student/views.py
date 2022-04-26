@@ -9,12 +9,12 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required,user_passes_test
 from django.conf import settings
 from datetime import date, timedelta
-from quiz import models as QMODEL
+from Atte_system import models as QMODEL
 from teacher import models as TMODEL
 from . import start_face_recognition
 import random
 from random import shuffle
-from quiz.models import *
+from Atte_system.models import *
 from django.http import HttpResponse
 from django.contrib.auth import authenticate, login
 from . import capture_photos,create_folder,train_model

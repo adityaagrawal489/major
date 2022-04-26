@@ -6,7 +6,7 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('quiz', '0020_auto_20220403_1611'),
+        ('Atte_system', '0020_auto_20220403_1611'),
         ('student', '0002_remove_student_status'),
     ]
 

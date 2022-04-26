@@ -16,25 +16,31 @@
       text-align: center;
     }
 
+    .alert {
+      margin: 0px;
+    }
   </style>
 
+  <title></title>
 </head>
 
 <body>
 
   {% include "automatic_attendence/navbar.html" %}
   <br><br>
-  <div class="jumbotron" style="margin-bottom:0px;">
-    <h1 class="display-4">Hello, Teacher</h1>
-    <p class="lead">Welcome to Automatic Attendance System</p>
+  <center>
+    <h3 class='alert alert-success' style="margin-bottom:0px;">About Us !</h3>
+  </center>
+  <div class="jumbotron" style="margin-bottom: 0px;margin-top: 0px;">
+    
+    <p class="lead">We Provide Platform For Teacher To Record Attendance of  Students  <br> Teacher can add course to System and Take Attendance of That Subject.</p>
     <hr class="my-4">
-    <p>You can access various features after Login.</p>
+    <p>Explore our Website.</p>
     <p class="lead">
-      <a class="btn btn-primary btn-lg" href="teachersignup" role="button">Create Your Account</a>
-      <a class="btn btn-primary btn-lg" href="teacherlogin" role="button">Login</a>
+      <a class="btn btn-primary btn-lg" href="/" role="button">HOME</a>
     </p>
-    <br><br><br><br>
   </div>
+
   {% include "automatic_attendence/footer.html" %}
 </body>
 

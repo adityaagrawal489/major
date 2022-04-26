@@ -39,6 +39,17 @@
   
 
  </script>
+ <!-- <script type="text/javascript">
+   
+        function NewTab(link){
+          
+          var href = $(this).attr("href");
+          console.log(href);
+          window.open(
+              link, "_blank");
+        }
+    
+ </script> -->
   
 </head>
 
@@ -92,7 +103,7 @@
             <td>{{m.start_time}}</td>
             <td>{{m.end_time}}</td>
             <td>{{m.date}}</td>
-            <td><a class="btn btn-primary  hide" href="{%url 'attend-meeting' pk=m.id %}" role="button">Link</a></td>
+            <td><a class="btn btn-primary  hide"  id='download' data-value="{{m.Meeting_link}}" href="{%url 'attend-meeting' pk=m.id %}" role="button">Link</a></td>
           </tr>
         </tbody>
         {% endfor %}
@@ -213,11 +224,25 @@ sanju.forEach(function(element,index){
         console.log('galat hai')
     }else{
         console.log('sahi hai')
-         element.cells[5].hidden=true;
+        element.cells[5].hidden=true;
 
     } 
   }
    
+});
+   </script>
+   <script type="text/javascript">
+     $("#download").click(function(e){
+    e.preventDefault();//this will prevent the link trying to navigate to another page
+    var href = $(this).attr("href");//get the href so we can navigate later
+    console.log(href)
+    i=$(this).data("value");
+    
+    window.open(
+              i, "_blank","fullscreen=yes");
+
+    //when update has finished, navigate to the other page
+    window.location = href;
 });
    </script>
 </body>

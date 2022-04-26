@@ -9,8 +9,8 @@ from datetime import date, timedelta
 
 # from quiz import models as QMODEL
 # from student import models as SMODEL
-from quiz import forms as QFORM
-from quiz.models import *
+from Atte_system import forms as QFORM
+from Atte_system.models import *
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 #for showing signup/login button for teacher

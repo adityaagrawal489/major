@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from quiz.models import *
+from Atte_system.models import *
 
 class TeacherUserForm(forms.ModelForm):
     class Meta:

@@ -1,8 +1,8 @@
 from django import forms
 from django.contrib.auth.models import User
 from . import models
-from quiz import models as QMODEL
-from quiz.models import *
+from Atte_system import models as QMODEL
+from Atte_system.models import *
 class StudentUserForm(forms.ModelForm):
     class Meta:
         model=User
